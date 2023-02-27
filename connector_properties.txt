@@ -1,0 +1,28 @@
+-------------File source connector-------------
+
+name=kafka-file-source-task
+connector.class=FileStreamSource
+tasks.max=1 
+file=/kafka/srcFiles/sourceFile.log 
+topic=kafka-file-source-task  
+
+-------------File sink connector-------------
+
+name=kafka-file-sink-task
+connector.class=FileStreamSink
+tasks.max=1 
+file=/kafka/srcFiles/targetFile.log 
+topics=kafka-file-source-task 
+
+-------------JDBC source connector-------------
+
+name=Kafka-jdbc-source-task-1
+connector.class=JdbcSourceConnector
+connection.url=jdbc:mysql://172.20.0.1:3306/srcdb?user=root&password=root&allowPublicKeyRetrieval=true
+table.whitelist=src_events
+tasks.max=1
+poll.interval.ms=2000
+mode=incrementing 
+incrementing.column.name=event_id 
+topic.prefix=consumer_   
+

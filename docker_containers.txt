@@ -1,0 +1,19 @@
+#Network
+docker network create bigdata_network
+docker network inspect bigdata_network 
+
+#Kafka 
+docker create --name kafka \
+--network bigdata_network -p 2181:2181 -p 9092:9092 -p 8083:8083 \
+-e ADVERTISED_HOST=<network gateway ip> -it ofrir119/kafka:2.4.0 
+
+#MySQL
+docker run -d --name mysql \
+--network bigdata_network -p 3306:3306 \
+-e MYSQL_ROOT_PASSWORD=root mysql
+
+#Kafdrop
+docker create --name kafdrop \
+--network bigdata_network -p \
+9000:9000 -e KAFKA_BROKERCONNECT=<network gateway ip>:9092 \
+-it obsidiandynamics/kafdrop
